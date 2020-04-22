@@ -9,6 +9,8 @@ import javafx.scene.control.TextArea;
 import javafx.event.ActionEvent;
 
 import javax.swing.*;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Stack;
 
@@ -24,6 +26,9 @@ public class Controller {
 
     @FXML
     ComboBox<Vertex> selectEndVertex;
+
+    @FXML
+    ComboBox<String> selectHeuristicFunction;
 
     @FXML
     Button printShortestPath;
@@ -54,6 +59,14 @@ public class Controller {
         selectEndVertex.setItems(vertices);
         selectEndVertex.setValue(graph.getVertices().get(0));
 
+        ArrayList<String> heuristicFunctions = new ArrayList<String>();
+        heuristicFunctions.add("Manhattan");
+        heuristicFunctions.add("Euclidean");
+
+        ObservableList<String> heuristicFunctionList = FXCollections.observableArrayList(heuristicFunctions);
+        selectHeuristicFunction.setItems(heuristicFunctionList);
+
+        selectHeuristicFunction.setValue("Manhattan");
     }
 
     @FXML
@@ -62,8 +75,39 @@ public class Controller {
         Vertex start = selectStartVertex.getValue();
         Vertex end = selectEndVertex.getValue();
 
-        if (graph.A_Star(start, end)){
-            shortestPathTA.appendText(printShortestPath(end)+"\n");
+        NumberFormat formatter = new DecimalFormat("#,##0");
+
+        boolean useManhattan = true;
+
+        if (selectHeuristicFunction.getValue().equals("Manhattan")){
+           useManhattan = true;
+        } else{
+            useManhattan = false;
+        }
+
+        long startTime = System.nanoTime();
+
+        boolean pathFound = graph.A_Star(start, end, useManhattan);
+
+        long endTime   = System.nanoTime();
+        long totalTime = endTime - startTime;
+        String totalTimeString = formatter.format(totalTime);
+
+
+        System.out.println("start time: "+startTime+" end time: "+endTime);
+
+        String runningTimeText;
+
+        if (useManhattan){
+            runningTimeText = "Total running time using Manhattan: "+totalTimeString;
+        } else {
+            runningTimeText = "Total running time using Euclidean: "+totalTimeString;
+        }
+        System.out.println(runningTimeText);
+
+
+        if (pathFound){
+            shortestPathTA.appendText(printShortestPath(end)+"\n"+runningTimeText+"\n");
 
         }else {
                 shortestPathTA.appendText("DID NOT FIND A PATH!! \n");

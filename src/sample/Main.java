@@ -10,12 +10,13 @@ import java.util.Stack;
 
 public class Main extends Application {
 
+
     @Override
     public void start(Stage primaryStage) throws Exception {
         //AStarGraph graph = createGraph();
         Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
         primaryStage.setTitle("Select a trip");
-        primaryStage.setScene(new Scene(root, 362, 330));
+        primaryStage.setScene(new Scene(root, 556, 494));
 
 
         primaryStage.show();

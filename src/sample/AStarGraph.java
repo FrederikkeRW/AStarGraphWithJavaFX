@@ -17,8 +17,13 @@ public class AStarGraph {
         v1.addOutEdge(v2,dist);
         v2.addOutEdge(v1,dist);
     }
-    public boolean A_Star(Vertex start, Vertex destination)
-    {   if (start==null || destination==null)
+
+
+
+    public boolean A_Star(Vertex start, Vertex destination, boolean useManhattan)
+    {
+
+        if (start==null || destination==null)
         return false;
         PriorityQueue<Vertex> Openlist = new PriorityQueue<Vertex>();
         ArrayList<Vertex> Closedlist = new ArrayList<Vertex>();
@@ -32,18 +37,21 @@ public class AStarGraph {
         Use either Manhattan or Euclidean as heuristic function
          */
 
-        manhattanHeuristic(destination);
-        // euclideanHeuristic(destination);
-
+        if (useManhattan){
+            manhattanHeuristic(destination);
+        } else {
+            euclideanHeuristic(destination);
+        }
 
         start.setg(0.0);
         start.calculatef();
-        System.out.println("Start Algorithm");
+        //System.out.println("Start Algorithm");
         /*
         Implement the A* algorithm
         Start the While loop
          */
         while (!Openlist.isEmpty()){
+
             Current = Openlist.poll();
             if (Current == destination) {
                 return true;
@@ -65,7 +73,9 @@ public class AStarGraph {
                     }
                 }
             }
+
         }
+
         return false;
     }
 
