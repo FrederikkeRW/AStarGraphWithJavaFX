@@ -33,8 +33,8 @@ public class AStarGraph {
         Vertex Neighbor;
 
         /*
-        Initialize h with chosen heuristic
         Use either Manhattan or Euclidean as heuristic function
+        Choose between them in the GUI
          */
 
         if (useManhattan){
@@ -58,10 +58,8 @@ public class AStarGraph {
             }
             Closedlist.add(Current);
             for (int i=0; i<Current.getNeighbours().size(); i++) {
-                Double tempGOfV = Current.getg() + Current.getNeighbourDistance().get(i);
-                /*
-                tempV = neighbours to current
-                 */
+                Double tempGOfV = Current.getg() + Current.getNeighbourDistance().get(i); // tempV = neighbours to current
+
                 Vertex tempV = Current.getNeighbours().get(i);
                 if (tempGOfV < tempV.getg()) {
                     tempV.setPrev(Current);
@@ -84,7 +82,7 @@ public class AStarGraph {
         for (int i=0; i<vertices.size();i++){
             vertices.get(i).seth(Manhattan(vertices.get(i),destination));
             /*
-            Print this, to see the different h value, when using the different heuristic functions.
+            Print the line bellow, to see the different h value, when using the different heuristic functions.
              */
             //System.out.println(vertices.get(i).getid() + ".h: " + vertices.get(i).geth());
         }
